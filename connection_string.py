@@ -1,0 +1,1 @@
+connection_string = "mongodb+srv://KelvinKramp:QWEqweASDasd@cluster0.boaqd.mongodb.net/database?retryWrites=true&w=majority"

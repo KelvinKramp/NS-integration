@@ -4,6 +4,10 @@ Dashboard containing
 
 ![alt text](https://github.com/KelvinKramp/NS-integration/blob/master/NS%20integration.jpeg)
 
+## API docs
+
+https://tig-diab.herokuapp.com/api-docs/#/
+
 ## Nightscout docs
 Nightscout API
 ==============

@@ -1,0 +1,9 @@
+https://www.youtube.com/watch?v=5SXW7oP8DGE
+
+https://stackoverflow.com/questions/37651759/refreshing-access-token-for-fitbit
+
+https://community.fitbit.com/t5/Web-API-Development/How-to-refresh-access-token-with-refresh-token-Python/td-p/2865665
+
+
+application register page
+https://dev.fitbit.com/apps/details/23BJM5
