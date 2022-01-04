@@ -3,7 +3,7 @@
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output
-from app.app import app,server
+from app.app import app
 import dash_bootstrap_components as dbc
 from pages import blank, autotune, reminders, activity
 from dateutil import parser
@@ -54,4 +54,5 @@ def display_page(url):
 
 
 if __name__ == '__main__':
-    app.run_server(host='0.0.0.0', port=8081, debug=True)
+    server = app.server
+    app.run_server(host='0.0.0.0', port=8081, debug=False)
