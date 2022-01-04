@@ -6,7 +6,7 @@ import dash
 from dash.dependencies import Input, Output, State
 from app.app import app
 import dash_bootstrap_components as dbc
-from pages import blank, autotune, reminders, activity
+from pages import blank, autotune, reminders, activity, switch_on
 from dateutil import parser
 from mongodb.save_tresholds_2_db import save_tresholds_2_db
 from mongodb.get_tresholds_db import get_tresholds_db
@@ -53,6 +53,8 @@ def display_page(url):
         return reminders.layout
     elif "activity" in url:
         return activity.layout
+    elif "switch_on" in url:
+        return switch_on.layout
     else:
         return blank.layout
 

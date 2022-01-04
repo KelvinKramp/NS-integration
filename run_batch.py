@@ -1,5 +1,6 @@
 import schedule
 import time
+from mongodb.connect_mongodb import mongodb_client
 
 def run_batch():
     # GET TRESHOLDS FROM DB
@@ -35,12 +36,29 @@ def run_batch():
                                 battery_level = {}
                                 insuline_level = {}
                                 """.format(cannula_age, battery_level, insuline_level), "")
-        bool_site_change, bool_battery_change, bool_insuline_level = False, False, False
-        save_current_values_db(cannula_age, battery_level, insuline_level, bool_site_change, bool_battery_change,
-                               bool_insuline_level)
+        switch_db = mongodb_client.NS_extension
+        collection_name = "switch"
+        switch_db = switch_db[collection_name]
+        data = {}
+        data["switch"] = False
+        replacement_data = data
+        id = switch_db.find().distinct('_id')
+        query = {"_id": id[0]}
+        result = switch_db.replace_one(query, replacement_data)
 
 if __name__ == "__main__":
     schedule.every(1).minutes.at(":00").do(run_batch)
-    while True:
+    switch_db = mongodb_client.NS_extension
+    collection_name = "switch"
+    switch_db = switch_db[collection_name]
+    d = switch_db.find()
+    d = [i for i in d]
+    if not d:
+        data = {}
+        data["switch"] = True
+        switch_db.insert_many([data])
+    else:
+        pass
+    while d[0]["switch"]:
         schedule.run_pending()
         time.sleep(30)
