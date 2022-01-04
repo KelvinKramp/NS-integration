@@ -6,7 +6,7 @@ Dashboard containing
 
 ## API docs
 
-https://tig-diab.herokuapp.com/api-docs/#/
+https://nightscout-url/api-docs/#/
 
 ## Nightscout docs
 Nightscout API

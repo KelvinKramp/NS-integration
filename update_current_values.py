@@ -4,11 +4,19 @@ from datetime import datetime as dt
 from datetime import timedelta
 from dateutil import parser
 import pytz
+import os
 
 count = None
 timer = 1
+if "Users" in os.getcwd():
+    from dotenv import load_dotenv
+    load_dotenv()
+    NIGHTSCOUT_HOST = os.environ["NIGHTSCOUT_HOST"]
+    # get configuration settings firebase
+else:
+    NIGHTSCOUT_HOST = os.environ["NIGHTSCOUT_HOST"]
 
-def update_current_values(x, treshold, nightscout_host = "https://tig-diab.herokuapp.com", number_days_look_back = 20):
+def update_current_values(x, treshold, number_days_look_back = 20):
     # SET VARIABLES
     utc = pytz.UTC
     datetime_now = utc.localize(dt.now())
@@ -36,7 +44,7 @@ def update_current_values(x, treshold, nightscout_host = "https://tig-diab.herok
 
         # ADJUST API REQUEST
         url = '{0}/api/v1/{1}?find\[created_at\]\[\$gte\]=`date --date="{2} -4 hours" -Iminutes`&find\[created_at\]\[\$lte\]=`date --date="{3} +1 days" -Iminutes.&count={4}`'.format(
-            nightscout_host, api_request_par, start_date, end_date, count)
+            NIGHTSCOUT_HOST, api_request_par, start_date, end_date, count)
         res = requests.get(url)
         d = json.loads(res.text)
 
@@ -94,6 +102,7 @@ def update_current_values(x, treshold, nightscout_host = "https://tig-diab.herok
     houres = format(int(houres), '02d')
     minutes = format(int(minutes), '02d')
     time = houres+":"+minutes+"h"
+
     # CREATE DICTIONARY OF RESULTS OF DIFFERENT CURRENT VALUES AND RETURN RELEVANT RESULT
     outcome = {"site_change": [int(houres), time], "battery_level": [last_date_change[1], last_date_change[1]], "insuline_level":[last_date_change[1], last_date_change[1]]}
     # print(x)

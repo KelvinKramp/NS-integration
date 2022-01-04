@@ -29,7 +29,13 @@ from subprocess import call
 import shutil
 
 DIR = ''
-NIGHTSCOUT_HOST = ''
+if "Users" in os.getcwd():
+    from dotenv import load_dotenv
+    load_dotenv()
+    NIGHTSCOUT_HOST = os.environ["NIGHTSCOUT_HOST"]
+    # get configuration settings firebase
+else:
+    NIGHTSCOUT_HOST = os.environ["NIGHTSCOUT_HOST"]
 START_DATE = datetime.datetime.today() - datetime.timedelta(days=1)
 END_DATE = datetime.datetime.today()
 NUMBER_OF_RUNS = 1
@@ -153,7 +159,7 @@ def get_nightscout_carb_and_insulin_treatments(nightscout_host, start_date, end_
     output_file_name = os.path.join(directory, 'autotune', 'ns-treatments.json')
     start_date = start_date.strftime("%Y-%m-%d") + 'T20:00-05:00'
     end_date = end_date.strftime("%Y-%m-%d") + 'T20:00-05:00'
-    nightscout_host = "https://tig-diab.herokuapp.com"
+    nightscout_host = NIGHTSCOUT_HOST
     url = '{0}/api/v1/treatments.json?find\[created_at\]\[\$gte\]=`date --date="{1} -4 hours" -Iminutes`&find\[created_at\]\[\$lte\]=`date --date="{2} +1 days" -Iminutes`'.format(
         nightscout_host, start_date, end_date)
     # TODO: Add ability to use API secret for Nightscout.
