@@ -8,6 +8,7 @@ import dash_bootstrap_components as dbc
 from pages import blank, autotune, reminders, activity
 from dateutil import parser
 
+server = app.server
 
 def convert_to_datetime(date):
     return parser.parse(date)
@@ -54,5 +55,4 @@ def display_page(url):
 
 
 if __name__ == '__main__':
-    server = app.server
     app.run_server(host='0.0.0.0', port=8081, debug=False)
