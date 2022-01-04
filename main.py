@@ -3,7 +3,7 @@
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output
-from app.app import app
+from app.app import app,server
 import dash_bootstrap_components as dbc
 from pages import blank, autotune, reminders, activity
 from dateutil import parser
@@ -11,7 +11,6 @@ from dateutil import parser
 
 def convert_to_datetime(date):
     return parser.parse(date)
-
 
 
 navbar = dbc.NavbarSimple(
