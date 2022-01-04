@@ -1,3 +1,5 @@
 venv
 .idea
 *.json
+connection_string.py
+.env
