@@ -1,3 +1,6 @@
+import schedule
+import time
+
 def run_batch():
     # GET TRESHOLDS FROM DB
     from mongodb.get_tresholds_db import get_tresholds_db
@@ -32,6 +35,12 @@ def run_batch():
                                 battery_level = {}
                                 insuline_level = {}
                                 """.format(cannula_age, battery_level, insuline_level), "")
+        bool_site_change, bool_battery_change, bool_insuline_level = False, False, False
+        save_current_values_db(cannula_age, battery_level, insuline_level, bool_site_change, bool_battery_change,
+                               bool_insuline_level)
 
 if __name__ == "__main__":
-    run_batch()
+    schedule.every(1).minutes.at(":00").do(run_batch)
+    while True:
+        schedule.run_pending()
+        time.sleep(30)
