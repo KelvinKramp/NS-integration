@@ -282,27 +282,6 @@ layout = html.Div(id='reminders-layout',children=[
 
 
 @app.callback(
-    Output("alert-auto-reminders", 'children'),
-    Output("alert-auto-reminders", 'is_open'),
-    Output('table-editing-reminders', "selected_cells"),
-    Output('table-editing-reminders', "active_cell"),
-    Output('table-editing-reminders', "data"),
-    Input('table-editing-reminders', 'data'),
-    State('table-editing-reminders', 'active_cell'),
-)
-def process_data_reminders(rows, active_cell):
-    if not (rows[0]["Cannula age"] or rows[0]["Battery level"] or rows[0]["Insuline level"]):
-        return "", False, [], None, None
-    site_change, battery_level, insuline_level = rows[0]["Cannula age"],rows[0]["Battery level"],rows[0]["Insuline level"]
-    save_tresholds_2_db(site_change,battery_level,insuline_level)
-    site_change, battery_level, insuline_level = get_tresholds_db()
-    treshold_values = [{'Cannula age': site_change, 'Battery level': battery_level, 'Insuline level': insuline_level}]
-    if active_cell:
-        return [str(active_cell['column_id']) + " treshold succesfully saved"], True, [], None, treshold_values
-    else:
-        return "", False, [], None, treshold_values
-
-@app.callback(
     Output("emails-list", "data"),
     [Input('e-mail-address', 'n_clicks'),],
     State("input-name", "value"),
@@ -322,7 +301,6 @@ def add_list(click, name, e_mail):
               Input('interval-component', 'n_intervals'),)
 def update_metrics(n):
     # import database variables treshold + current values
-    th_site_change, th_battery_level, th_insuline_level = get_tresholds_db()
     site_change, battery_level, insuline_level = get_current_values_db()
     current_values = [{'Cannula age':site_change, 'Battery level':battery_level, 'Insuline level':insuline_level}]
     return current_values

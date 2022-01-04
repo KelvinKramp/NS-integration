@@ -50,6 +50,7 @@ def update_current_values(x, treshold, number_days_look_back = 20):
 
         # LOOP OVER DICTIONARY OF RESULTS TO FIND DIFFERENT VARIABLES
         if x == "site_change":
+            treshold = -treshold # convert to negative to make later comparison easy
             for i in d:
                 if i["eventType"] == "Site Change":
                     try:
@@ -104,14 +105,14 @@ def update_current_values(x, treshold, number_days_look_back = 20):
     time = houres+":"+minutes+"h"
 
     # CREATE DICTIONARY OF RESULTS OF DIFFERENT CURRENT VALUES AND RETURN RELEVANT RESULT
-    outcome = {"site_change": [int(houres), time], "battery_level": [last_date_change[1], last_date_change[1]], "insuline_level":[last_date_change[1], last_date_change[1]]}
+    outcome = {"site_change": [-int(houres), time], "battery_level": [last_date_change[1], last_date_change[1]], "insuline_level":[last_date_change[1], last_date_change[1]]} # convert int houres to negative for comparison
     # print(x)
     # print(outcome[x][0])
     # print(treshold)
-    if outcome[x][0] > int(treshold):
-        return True, outcome[x][1]
-    else:
+    if int(outcome[x][0]) > int(treshold):
         return False, outcome[x][1]
+    else:
+        return True, outcome[x][1]
 
 if __name__ == "__main__":
-    print(update_current_values("site_change", 20))
+    print(update_current_values("battery_level", 20))

@@ -26,4 +26,4 @@ def save_tresholds_2_db(a,b,c):
         print([i for i in s])
 
 if __name__ == "__main__":
-    save_tresholds_2_db(200,20,3)
+    save_tresholds_2_db(36,20,20)
