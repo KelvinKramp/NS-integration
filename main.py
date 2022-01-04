@@ -2,12 +2,14 @@
 # IMPORT MODULES
 from dash import html
 from dash import dcc
+import dash
 from dash.dependencies import Input, Output
 from app.app import app
 import dash_bootstrap_components as dbc
 from pages import blank, autotune, reminders, activity
 from dateutil import parser
 
+app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.FLATLY])
 server = app.server
 
 def convert_to_datetime(date):
