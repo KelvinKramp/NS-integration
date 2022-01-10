@@ -1,7 +1,7 @@
 #!/bin/sh
 #pip freeze > requirements.txt
 git add .
-git commit -m "update"
+git commit -m "frontend autotune working"
 git push heroku master
 # git push origin master
 # heroku pg:reset --confirm suridice2
