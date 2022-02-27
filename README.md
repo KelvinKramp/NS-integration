@@ -1,6 +1,6 @@
 # Nightscout integration
 
-Dashboard containing 
+Dashboard containing:
 
 ![alt text](https://github.com/KelvinKramp/NS-integration/blob/master/NS%20integration.jpeg)
 
