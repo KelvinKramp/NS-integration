@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 import requests
 # import pandas as pd
 # import json
+from API_url import BASE, api_url_part
 
 # VARIABLEs
 df = pd.DataFrame()
@@ -22,11 +23,6 @@ params = [
     'Efficiency', 'Power', 'Displacement'
 ]
 
-BASE = "http://127.0.0.1:8080/"
-api_url_part = "api/"
-NS_HOST = "https://tig-diab.herokuapp.com/"
-start_date = "2021-12-30"
-end_date = "2022-01-04"
 
 # Functions
 # https://stackoverflow.com/questions/7160737/how-to-validate-a-url-in-python-malformed-or-not
@@ -41,7 +37,7 @@ def uri_validator(x):
 # TEST 1
 # GET PROFILE
 def get_profile(NS_HOST):
-    response = requests.get(BASE + api_url_part + "get-profile", {"--nightscout":NS_HOST, "--start-date":start_date, "--end-date":end_date})
+    response = requests.get(BASE + api_url_part + "get-profile", {"--nightscout":NS_HOST})
     d = response.json()
     full_profile = d
     print(d)
@@ -425,87 +421,6 @@ layout = html.Div([
     ])
 
 
-@app.callback(
-    Output('table-current-non-basals', 'columns'),
-    Output('table-current-non-basals', 'data'),
-    Output('table-current-basals', 'columns'),
-    Output('table-current-basals', 'data'),
-    Output('step-1', 'hidden'),
-    Output('step-2', 'hidden'),
-    Output('step-3', 'hidden'),
-    Output('table-recommendations', 'columns'),
-    Output('table-recommendations', 'data'),
-    [Input('load-profile', 'n_clicks'),
-    Input('run-autotune', 'n_clicks'),],
-    State('input-url', 'value'),
-    State('date-picker-range', 'start_date'),
-    State('date-picker-range', 'end_date'),
-)
-def load_profile(run_click, run_autotune, NS_HOST, start_date, end_date):
-    print(run_autotune)
-    print(NS_HOST)
-    print(start_date)
-    print(end_date)
-    if run_autotune:
-        if start_date is not None:
-            if (end_date is not None) and (NS_HOST is not None):
-                b = uri_validator(NS_HOST)
-                if b is not None:
-                    response = requests.get(BASE + api_url_part + "run-autotune", {"--nightscout":NS_HOST, "--start-date":start_date, "--end-date":end_date})
-                    payload = response.json()
-                    df = pd.read_json(payload)
-                    print(df)
-                    # GET RECOMMENDATIONS
-                    # response = requests.get(BASE + api_url_part + "get-recomm", {"--nightscout":NS_HOST, "--start-date":start_date, "--end-date":end_date})
-                    # payload = response.json()
-                    # df = pd.read_json(payload)
-                    # print(df)
-                    return [], [], [], [], True, True, False, [{"name": i, "id": i} for i in df.columns], df.to_dict('records'),
-                else:
-                    df = pd.DataFrame()
-            else:
-                df = pd.DataFrame()
-        else:
-            df = pd.DataFrame()
-    else:
-        df = pd.DataFrame()
-    if run_click==1:
-        df_basals, df_non_basals, _ = get_profile(NS_HOST)
-        print(_)
-        return  [{"name": i, "id": i} for i in df_non_basals.columns], df_non_basals.to_dict('records'), \
-                [{"name": i, "id": i} for i in df_basals.columns], df_basals.to_dict('records'),\
-                True,False,True,[{"name": i, "id": i} for i in df.columns], df.to_dict('records'),
-    elif run_click==2:
-        df_basals, df_non_basals, _ = get_profile(NS_HOST)
-        print(_)
-        return  [{"name": i, "id": i} for i in df_non_basals.columns], df_non_basals.to_dict('records'), \
-                [{"name": i, "id": i} for i in df_basals.columns], df_basals.to_dict('records'),\
-                True,True,False,[{"name": i, "id": i} for i in df.columns], df.to_dict('records'),
-    else:
-        return [],[],[],[], False, True, True,[{"name": i, "id": i} for i in df.columns], df.to_dict('records'),
-
-
-@app.callback(
-    Output('empty-div-autotune','children'),
-    [Input('activate-profile', 'n_clicks')],
-    State('input-url', 'value'),
-    State('input-API-secret', 'value'),
-    State('table-recommendations', 'data'),
-)
-def activate_profile(click, NS_HOST, API_SECRET, json_data):
-    if click and NS_HOST and API_SECRET and json_data:
-        _, _, profile = get_profile(NS_HOST)
-        new_profile = create_adjusted_profile(json_data, profile)
-        from pprint import pprint
-        print("NEW PROFILE")
-        pprint(new_profile)
-        response = requests.get(BASE + api_url_part + "upload", {"--nightscout":NS_HOST, "--token":API_SECRET, "--json_profile":str(new_profile)})
-        print("response")
-        print(response)
-        print(response.text)
-        return "PROFILE SUCCESFULLY UPLOADED"
-    else:
-        return ""
     # if click:
 
     # else:
