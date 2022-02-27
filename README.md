@@ -9,7 +9,7 @@
 6) Open smartscale weight and body composition measurements.
 
 ### Overview
-![alt text](https://github.com/KelvinKramp/NS-integration/NS%20integration.jpeg)
+![alt text](https://github.com/KelvinKramp/NS-integration/blob/master/NS%20integration.jpeg)
 
 ## Nighscout API docs
 
